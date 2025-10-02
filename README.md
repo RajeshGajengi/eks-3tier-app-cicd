@@ -263,3 +263,87 @@ Previews the changes Terraform will make to the infrastructure, allowing you to 
 4. Terraform Apply
 
 Applies the changes to create the EKS cluster and necessary IAM roles using the default VPC.
+
+## Terraform Pipeline Script
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Git Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RajeshGajengi/eks-terraform.git'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
+                    sh 'terraform apply --auto-approve'
+                }
+            }
+        }
+    }
+}
+
+```
+
+## Deployment Architecture
+
+## Kubernetes Deployment Files
+
+Your k8s/ directory should contain:
+
+- backend-deployment.yml
+- backend-service.yml
+- frontend-deployment.yml
+- frontend-service.yml
+- ingress.yml
+- secrets.yml (for database credentials, etc.)
+
+Make sure your secrets are stored securely using Kubernetes secrets and not hardcoded.
+
+
+## Environment Variables
+
+| Variable                   | Used In  | Description                              |
+| -------------------------- | -------- | ---------------------------------------- |
+| SPRING_DATASOURCE_URL      | Backend  | JDBC URL for MariaDB                     |
+| SPRING_DATASOURCE_USERNAME | Backend  | Database username                        |
+| SPRING_DATASOURCE_PASSWORD | Backend  | Database password                        |
+| VITE_API_URL               | Frontend | Backend API endpoint (e.g., Ingress URL) |
+
+
+These are injected into the containers either via:
+- Kubernetes Secrets (`secrets.yml`)
+- Dockerfile `ENV` values
+- `.env` files in the frontend
+
+
+## Conclusion
+
+This project demonstrates an end-to-end CI/CD pipeline for a 3-tier application deployed on Kubernetes (EKS). The infrastructure is provisioned using Terraform, and the build and deployment processes are automated using Jenkins. The use of Docker and Kubernetes ensures containerized, scalable, and maintainable deployments.
+
+Key Benefits:
+
+- ✅ Fully automated CI/CD pipeline
+- ✅ Infrastructure as Code using Terraform
+- ✅ Containerized deployment with Docker
+- ✅ Scalable and resilient Kubernetes architecture
+- ✅ Secure database integration via AWS RDS
