@@ -1,10 +1,19 @@
-FROM node:24-alpine
-COPY . /opt/
-WORKDIR /opt
-RUN npm install && npm run build
-RUN apk update && apk add apache2
-RUN rm -rf /var/www/localhost/htdocs/*
-RUN cp -rf dist/* /var/www/localhost/htdocs
-EXPOSE 80
-ENTRYPOINT ["httpd","-D","FOREGROUND"]
+# Stage 1: Build
+FROM node:24-alpine AS builder
 
+WORKDIR /app
+
+COPY . .
+
+RUN npm install && npm run build
+
+# Stage 2: Serve with Apache
+FROM httpd:alpine
+
+RUN rm -rf /usr/local/apache2/htdocs/*
+
+COPY --from=builder /app/dist/ /usr/local/apache2/htdocs/
+
+EXPOSE 80
+
+CMD ["httpd-foreground"]
