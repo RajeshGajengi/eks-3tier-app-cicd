@@ -81,19 +81,23 @@ eks-3tier-app-cicd/
 
 ## Workflow: 
 
-- **Clone the repository**: Start by cloning the project to your local machine.
+1. **Clone the repository**: 
+   - Start by cloning the project to your local machine.
 
-- **Set up the database**: Follow the [database setup guide](docs/database-setup.md) to create and configure the MariaDB database.
+2. **Set up the database**: 
+   - Follow the [database setup guide](docs/database-setup.md) to create and configure the MariaDB database.
 
-- **Install necessary tools**: Refer to the [installation guide](docs/installation-guide.md)
- for the tools required (e.g., Docker, Terraform, Jenkins, etc.).
+3. **Install necessary tools**: 
+   -Refer to the [installation guide](docs/installation-guide.md) for the tools required (e.g., Docker, Terraform, Jenkins, etc.).
 
-- **Configure Jenkins**: Follow the [Jenkins setup guide](docs/jenkins-setup.md) to set up Jenkins credentials and build pipelines for both Terraform and the application.
+4. **Configure Jenkins**: 
+   - Follow the [Jenkins setup guide](docs/jenkins-setup.md) to set up Jenkins credentials and build pipelines for both Terraform and the application.
 
-- **Set up EKS using Terraform**: Check out the [Terraform configuration guide](docs/terraform-configuration.md)
- to modify AWS region, cluster, and node settings.
+5. **Set up EKS using Terraform**: 
+   - Check out the [Terraform configuration guide](docs/terraform-configuration.md) to modify AWS region, cluster, and node settings.
 
-- **Configure Kubernetes Manifests**: Review the [Kubernetes setup guide](docs/kubernetes-setup.md) to modify Docker image names and configure database credentials via Kubernetes Secrets.
+6. **Configure Kubernetes Manifests**: 
+   - Review the [Kubernetes setup guide](docs/kubernetes-setup.md) to modify Docker image names and configure database credentials via Kubernetes Secrets.
 
 
 **To verify that the deployment is successful, ensure that**:
