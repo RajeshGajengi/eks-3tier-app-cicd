@@ -58,12 +58,12 @@ The Terraform pipeline is responsible for provisioning the EKS cluster using inf
 ### Pipeline Stages 
 1. **Clone repository** 
     - Terraform files from GitHub
-1. **Terraform Init**
+1. **Terraform-Init**
     - Initializes the Terraform working directory by downloading the required providers and modules.
-2. **Terraform Plan**
+2. **Terraform-Plan**
     - Previews the changes Terraform will make to the infrastructure, allowing you to review before applying.
-3. **Terraform Apply**  
-    - Applies the changes to create the EKS cluster and necessary IAM roles using the default VPC.
+3. **Terrafor-Apply**  
+    - Applies the Terraform plan to provision infrastructure resources on AWS, including the EKS cluster and necessary IAM roles using the default VPC.
 
 
 ## Application Pipeline
