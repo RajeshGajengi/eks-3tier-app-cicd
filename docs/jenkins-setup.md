@@ -70,7 +70,7 @@ The Terraform pipeline is responsible for provisioning the EKS cluster using inf
 The application pipeline automates the process of building, pushing, and deploying the backend and frontend services to Kubernetes.
 ### Pipeline Stages
 1. **Clone Repository**:
-    -Clones the GitHub repository containing the source code for the backend and frontend.
+    - Clones the GitHub repository containing the source code for the backend and frontend.
 2. **Docker Login**:
     - Logs into Docker Hub using the credentials stored in Jenkins.
 3. **Build Backend Image and Push to Docker Hub**:
