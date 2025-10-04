@@ -2,6 +2,10 @@
 
 Terraform is used to provision and manage the Kubernetes infrastructure on AWS, including the EKS cluster, IAM roles, and node groups.
 
+> **Note**: This setup assumes usage of the **default VPC** to keep networking simple.  
+> For production environments, it is highly recommended to define a custom VPC, subnets, NAT gateways, and fine-grained IAM roles for enhanced security and control.
+
+
 ## 📦 Prerequisites
 
 Ensure the following tools are installed and configured:
@@ -25,6 +29,12 @@ Terraform/
 You can change AWS region, EKS cluster name, node group size,node count, etc. via the variables.tf file or by passing values in the CLI:
 ```bash
 terraform apply -var="region=us-east-1" -var="cluster_name=dev-eks-cluster"
+```
+Or use a terraform.tfvars file:
+```hcl 
+region       = "us-east-1"
+cluster_name = "dev-eks-cluster"
+node_count   = 2
 ```
 
 
@@ -61,11 +71,10 @@ node_count    = 2
 
 ## Cluster Verifcation: 
 
-After provisioning, use the kubeconfig output to connect:
+Once the cluster is provisioned, configure kubectl to interact with EKS:
 
 ```bash
 aws eks update-kubeconfig --region <region> --name <cluster_name>
 kubectl get nodes
 ```
-
-Then proceed to deploy your application using the Kubernetes manifests or Helm charts.
+> If everything is configured correctly, you should see your EKS nodes listed.
