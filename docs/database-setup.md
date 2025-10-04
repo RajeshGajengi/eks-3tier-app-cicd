@@ -13,14 +13,14 @@ This project uses **MariaDB hosted on AWS RDS** for persistent storage.
 <!-- Terraform option (recommended): see `terraform/rds.tf`. -->
 
 
-### Step 2: Connect to the RDS instance
+## Step 2: Connect to the RDS instance
 Use the MariaDB client to connect to your RDS instance:
 ```bash
 mysql -h <RDS_ENDPOINT> -u admin -p
 ```
 You’ll be prompted to enter the password.
 
-### Step 3: Create the database
+## Step 3: Create the database
 Once connected:
 ```sql
 CREATE DATABASE student_db;
@@ -28,7 +28,7 @@ CREATE DATABASE student_db;
 This will create the database used by the backend Spring Boot application.
 > ⚠️ Make sure the name matches the value in the `SPRING_DATASOURCE_URL` (e.g., `jdbc:mariadb://<RDS_ENDPOINT>:3306/student_db`).
 
-### Step 4: Grant access (optional)
+## Step 4: Grant access (optional)
 If using a different DB user than admin, ensure it has privileges on the database:
 ```sql
 GRANT ALL PRIVILEGES ON student_db.* TO 'your_user'@'%' IDENTIFIED BY 'your_password';
@@ -47,8 +47,7 @@ FLUSH PRIVILEGES;
 - Rotate passwords periodically.
 - Avoid exposing RDS publicly.
 
----
-**Note** 
+## Note 
 - Ensure the RDS endpoint and credentials are added in Jenkins credentials:
     - `database_url`
     - `database_user`
