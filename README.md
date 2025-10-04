@@ -58,6 +58,7 @@ eks-3tier-app-cicd/
 ```
 
 ## Architecture
+![Architecture](docs/Architecture.png)
 
 ## Tech Stack
 - **Frontend**: React, Vite, Node.js, and npm — Chosen for building a fast and scalable UI.
