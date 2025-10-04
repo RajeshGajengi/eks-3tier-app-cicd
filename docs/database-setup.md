@@ -12,7 +12,6 @@ This project uses **MariaDB hosted on AWS RDS** for persistent storage.
 <!-- - Public access: **No** (preferred) → use VPC + Security Groups -->
 <!-- Terraform option (recommended): see `terraform/rds.tf`. -->
 
----
 
 ### Step 2: Connect to the RDS instance
 Use the MariaDB client to connect to your RDS instance:
@@ -27,8 +26,7 @@ Once connected:
 CREATE DATABASE student_db;
 ```
 This will create the database used by the backend Spring Boot application.
-
-⚠️ Make sure the name matches the value in the `SPRING_DATASOURCE_URL` (e.g., `jdbc:mariadb://<RDS_ENDPOINT>:3306/student_db`).
+> ⚠️ Make sure the name matches the value in the `SPRING_DATASOURCE_URL` (e.g., `jdbc:mariadb://<RDS_ENDPOINT>:3306/student_db`).
 
 ### Step 4: Grant access (optional)
 If using a different DB user than admin, ensure it has privileges on the database:
@@ -43,16 +41,17 @@ FLUSH PRIVILEGES;
     - EKS worker nodes
     - Jenkins server (if needed)
 
+
+## Best Practices
+- Use AWS Secrets Manager for DB credentials.
+- Rotate passwords periodically.
+- Avoid exposing RDS publicly.
+
+---
 **Note** 
 - Ensure the RDS endpoint and credentials are added in Jenkins credentials:
     - `database_url`
     - `database_user`
     - `database_password`
-
-**Best Practices**
-- Use AWS Secrets Manager for DB credentials.
-- Rotate passwords periodically.
-- Avoid exposing RDS publicly.
-
 <!-- 
 > 💡 If you're provisioning RDS via Terraform, refer to your Terraform config (e.g., `terraform/rds.tf`) for the actual DB name, username, and endpoint. -->
