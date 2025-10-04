@@ -1,79 +1,89 @@
-
 pipeline {
     agent any
-    stages{
-        stage('clone reposirory'){
-            steps{
+
+    environment {
+        BACKEND_IMAGE = 'r25gajengi/easy_backend:v2'
+        FRONTEND_IMAGE = 'r25gajengi/easy_frontend:v2'
+        AWS_REGION = 'us-east-1' // Use consistent region
+        CLUSTER_NAME = 'mycluster'
+    }
+
+    stages {
+        stage('clone-repository') {
+            steps {
                 git branch: 'main', url: 'https://github.com/RajeshGajengi/EasyCRUD-K8s.git'
             }
         }
-        stage('Docker login'){
-            steps{
+
+        stage('docker-login') {
+            steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-cred', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
-                }  
+                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                }
             }
         }
-        stage('Build Backend image and push to Docker Hub'){
-            steps{
-               sh '''
+
+        stage('build-backend-image') {
+            steps {
+                sh '''
                     cd backend
-                    docker build -t r25gajengi/easy_backend:v2 .
-                    docker push r25gajengi/easy_backend:v2
-                    '''
+                    docker build -t ${BACKEND_IMAGE} .
+                    docker push ${BACKEND_IMAGE}
+                '''
             }
         }
-        
-        stage('Build Frontend image adn Push to Docker Hub'){
-            steps{
+
+        stage('build-frontend-image') {
+            steps {
                 sh '''
                     cd frontend
-                    docker build -t r25gajengi/easy_frontend:v2 .
-                    docker push r25gajengi/easy_frontend:v2
+                    docker build -t ${FRONTEND_IMAGE} .
+                    docker push ${FRONTEND_IMAGE}
+                '''
+            }
+        }
+
+        stage('configure-kubectl') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh 'aws eks update-kubeconfig --region ${AWS_REGION} --name ${CLUSTER_NAME}'
+                }
+            }
+        }
+
+        stage('install-nginx-ingress') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml'
+                }
+            }
+        }
+
+        stage('deploy-to-kubernetes') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh '''
+                        kubectl apply -f k8s/secrets.yml
+                        kubectl apply -f k8s/backend-deployment.yml
+                        kubectl apply -f k8s/backend-service.yml
+                        kubectl apply -f k8s/frontend-deployment.yml
+                        kubectl apply -f k8s/frontend-service.yml
+                        kubectl apply -f k8s/ingress.yml
                     '''
-            }
-        }
-        stage ('kubernetes configure'){
-            steps{
-                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
-                sh 'aws eks update-kubeconfig --region ap-south-1 --name mycluster'
-            
                 }
             }
         }
-        stage ('ingress controller download'){
-            steps{
-                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
-                sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml'
-                }
-            }
-        }
-        stage ('Kubernetes deployment'){
-            steps{
-                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
-                sh '''
-                kubectl apply -f k8s/secrets.yml
-                kubectl apply -f k8s/backend-deployment.yml
-                kubectl apply -f k8s/backend-service.yml
-                kubectl apply -f k8s/frontend-deployment.yml
-                kubectl apply -f k8s/frontend-service.yml
-                kubectl apply -f k8s/ingress.yml
-                '''
-                }
-            }
-        }
-        stage('verify'){
-            steps{
-                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
-                sh '''
-                kubectl get pods
-                kubectl get svc
-                kubectl get ingress
-                '''
+
+        stage('verify-deployment') {
+            steps {
+                withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh '''
+                        kubectl get pods
+                        kubectl get svc
+                        kubectl get ingress
+                    '''
                 }
             }
         }
     }
 }
-
- 
