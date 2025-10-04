@@ -8,6 +8,7 @@ Jenkins orchestrates both **infrastructure provisioning** and **application depl
 Make sure the following plugins are installed:
 
 - AWS Credentials Plugin
+- Pipeline: AWS steps
 - GitHub Integration Plugin
 - SonarQube Scanner (if using SonarQube)
 <!-- - Blue Ocean (optional for nicer UI)
@@ -57,32 +58,32 @@ The Terraform pipeline is responsible for provisioning the EKS cluster using inf
 ### Pipeline Stages 
 1. **Clone repository** 
     - Terraform files from GitHub
-1. Terraform Init
+1. **Terraform Init**
     - Initializes the Terraform working directory by downloading the required providers and modules.
-2. Terraform Plan
+2. **Terraform Plan**
     - Previews the changes Terraform will make to the infrastructure, allowing you to review before applying.
-3. Terraform Apply  
+3. **Terraform Apply**  
     - Applies the changes to create the EKS cluster and necessary IAM roles using the default VPC.
 
 
 ## Application Pipeline
 The application pipeline automates the process of building, pushing, and deploying the backend and frontend services to Kubernetes.
 ### Pipeline Stages
-1. Clone Repository:
+1. **Clone Repository**:
     -Clones the GitHub repository containing the source code for the backend and frontend.
-2. Docker Login:
+2. **Docker Login**:
     - Logs into Docker Hub using the credentials stored in Jenkins.
-3. Build Backend Image and Push to Docker Hub:
+3. **Build Backend Image and Push to Docker Hub**:
     - Builds the backend Docker image from the backend/ directory and pushes it to Docker Hub.
-4. Build Frontend Image and Push to Docker Hub:
+4. **Build Frontend Image and Push to Docker Hub**:
     - Builds the frontend Docker image from the frontend/ directory and pushes it to Docker Hub.
-5. Kubernetes Configuration:
+5. **Kubernetes Configuration**:
     - Configures kubectl to interact with the EKS cluster.
-6. Ingress Controller Download:
+6. **Ingress Controller Download**:
     - Installs the NGINX Ingress Controller in the Kubernetes cluster.
-7. Kubernetes Deployment:
+7. **Kubernetes Deployment**:
     - Deploys the backend and frontend services to Kubernetes using kubectl apply with the YAML configuration files.
-8. Verify:
+8. **Verify**:
     - Verifies the deployment by checking the status of Pods, Services, and Ingress.
 Application Pipeline Script
 
