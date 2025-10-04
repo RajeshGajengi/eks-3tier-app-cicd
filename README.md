@@ -88,7 +88,7 @@ eks-3tier-app-cicd/
    - Follow the [database setup guide](docs/database-setup.md) to create and configure the MariaDB database.
 
 3. **Install necessary tools**: 
-   -Refer to the [installation guide](docs/installation-guide.md) for the tools required (e.g., Docker, Terraform, Jenkins, etc.).
+   - Refer to the [installation guide](docs/installation-guide.md) for the tools required (e.g., Docker, Terraform, Jenkins, etc.).
 
 4. **Configure Jenkins**: 
    - Follow the [Jenkins setup guide](docs/jenkins-setup.md) to set up Jenkins credentials and build pipelines for both Terraform and the application.
