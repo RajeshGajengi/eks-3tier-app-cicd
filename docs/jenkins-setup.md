@@ -69,23 +69,22 @@ The Terraform pipeline is responsible for provisioning the EKS cluster using inf
 ## Application Pipeline
 The application pipeline automates the process of building, pushing, and deploying the backend and frontend services to Kubernetes.
 ### Pipeline Stages
-1. **Clone Repository**:
+1. **clone-repository**:
     - Clones the GitHub repository containing the source code for the backend and frontend.
 2. **Docker Login**:
     - Logs into Docker Hub using the credentials stored in Jenkins.
-3. **Build Backend Image and Push to Docker Hub**:
-    - Builds the backend Docker image from the backend/ directory and pushes it to Docker Hub.
-4. **Build Frontend Image and Push to Docker Hub**:
-    - Builds the frontend Docker image from the frontend/ directory and pushes it to Docker Hub.
-5. **Kubernetes Configuration**:
-    - Configures kubectl to interact with the EKS cluster.
-6. **Ingress Controller Download**:
-    - Installs the NGINX Ingress Controller in the Kubernetes cluster.
-7. **Kubernetes Deployment**:
-    - Deploys the backend and frontend services to Kubernetes using kubectl apply with the YAML configuration files.
-8. **Verify**:
-    - Verifies the deployment by checking the status of Pods, Services, and Ingress.
-Application Pipeline Script
+3. **build-backend-image**:
+    - Builds the backend Docker image from the `backend/` directory and pushes it to Docker Hub.
+4. **build-frontend-image**:
+    - Builds the frontend Docker image from the `frontend/` directory and pushes it to Docker Hub.
+5. **configure-kubectl**:
+    - Configures `kubectl` to interact with the AWS EKS cluster using `aws eks update-kubeconfig`.
+6. **install-nginx-ingress**:
+    - Installs the NGINX Ingress Controller in the Kubernetes cluster to enable external access to services.
+7. **deploy-to-kubernetes**:
+    - Applies Kubernetes manifests for secrets, backend, frontend, and ingress using `kubectl apply`.
+8. **verify-deployment**:
+    - Verifies that the application is running by checking the status of Pods, Services, and the Ingress resource.
 
 ## SonarQube Integration (Optional)
 
