@@ -10,13 +10,14 @@ pipeline {
         stage('clone-repository') {
             steps {
                 git branch: 'main', url: "${GIT_URL}"
-                sh 'cd terraform'
+                
             }
         }
 
         stage('terraform-init') {
             steps {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh 'cd terraform'
                     sh 'terraform init'
                 }
             }
@@ -25,6 +26,7 @@ pipeline {
         stage('terraform-plan') {
             steps {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh 'cd terraform'
                     sh 'terraform plan'
                 }
             }
@@ -33,6 +35,7 @@ pipeline {
         stage('terraform-apply') {
             steps {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    sh 'cd terraform'
                     sh 'terraform apply --auto-approve'
                 }
             }
