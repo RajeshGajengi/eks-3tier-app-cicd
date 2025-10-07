@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('clone-repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/RajeshGajengi/EasyCRUD-K8s.git'
+                git branch: 'main', url: 'https://github.com/RajeshGajengi/eks-3tier-app-cicd.git'
             }
         }
 
