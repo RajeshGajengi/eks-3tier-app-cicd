@@ -38,7 +38,6 @@ In Jenkins, add the following credentials under Manage Jenkins → Manage Creden
  - **database_url**: `jdbc:mariadb://<RDS_Endpoint>:3306/student_db`
  - **database_user**: Database username for the MariaDB instance.
  - **database_password**: Database password for the MariaDB instance.
- - **backend_api**: Backend API URL, e.g., `http://<backend_IP>:8081/api`.
 
 
 ## CI/CD Pipelines
@@ -62,7 +61,7 @@ The Terraform pipeline is responsible for provisioning the EKS cluster using inf
     - Initializes the Terraform working directory by downloading the required providers and modules.
 2. **Terraform-Plan**
     - Previews the changes Terraform will make to the infrastructure, allowing you to review before applying.
-3. **Terrafor-Apply**  
+3. **Terraform-Apply**  
     - Applies the Terraform plan to provision infrastructure resources on AWS, including the EKS cluster and necessary IAM roles using the default VPC.
 
 

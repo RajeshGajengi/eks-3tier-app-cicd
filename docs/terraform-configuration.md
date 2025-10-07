@@ -78,3 +78,20 @@ aws eks update-kubeconfig --region <region> --name <cluster_name>
 kubectl get nodes
 ```
 > If everything is configured correctly, you should see your EKS nodes listed.
+
+
+## Pipelien stage for Destroy :
+```groovy
+ stages{
+        stage('terraform destroy'){
+            steps{
+                withAWS(credentials: 'aws-cred', region: 'us-east-1') {
+                sh '''
+                cd terraform
+                terraform destroy --auto-approve
+                '''     
+                }                
+            }            
+        }
+ }
+```
