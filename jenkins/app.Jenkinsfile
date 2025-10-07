@@ -4,7 +4,7 @@ pipeline {
     environment {
         BACKEND_IMAGE = 'r25gajengi/easy_backend:v2'
         FRONTEND_IMAGE = 'r25gajengi/easy_frontend:v2'
-        AWS_REGION = 'us-east-1' // Use consistent region
+        AWS_REGION = 'ap-south-1' // Use consistent region
         CLUSTER_NAME = 'mycluster'
     }
 
