@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        GIT_URL = 'https://github.com/RajeshGajengi/eks-terraform.git'
+        GIT_URL = 'https://github.com/RajeshGajengi/eks-3tier-app-cicd.git'
     }
 
     stages {
