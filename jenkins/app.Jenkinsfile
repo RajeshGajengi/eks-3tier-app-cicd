@@ -26,7 +26,7 @@ pipeline {
         stage('build-backend-image') {
             steps {
                 sh '''
-                    docker build -t ${BACKEND_IMAGE} -f docker/backend.dockerfile ./app/backend
+                    docker build -t ${BACKEND_IMAGE} .
                     docker push ${BACKEND_IMAGE}
                 '''
             }
@@ -35,7 +35,7 @@ pipeline {
         stage('build-frontend-image') {
             steps {
                 sh '''
-                    docker build -t ${FRONTEND_IMAGE} -f docker/frontend.dockerfile ./app/frontend
+                    docker build -t ${FRONTEND_IMAGE} .
                     docker push ${FRONTEND_IMAGE}
                 '''
             }
