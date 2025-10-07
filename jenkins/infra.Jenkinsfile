@@ -10,6 +10,7 @@ pipeline {
         stage('clone-repository') {
             steps {
                 git branch: 'main', url: "${GIT_URL}"
+                sh 'cd terraform'
             }
         }
 
