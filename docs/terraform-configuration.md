@@ -82,7 +82,9 @@ kubectl get nodes
 
 ## Pipelien stage for Destroy :
 ```groovy
- stages{
+pipeline {
+    agent any
+     stages{
         stage('terraform destroy'){
             steps{
                 withAWS(credentials: 'aws-cred', region: 'us-east-1') {
@@ -93,5 +95,6 @@ kubectl get nodes
                 }                
             }            
         }
- }
+     }
+}
 ```
