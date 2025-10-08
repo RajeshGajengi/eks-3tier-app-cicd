@@ -60,7 +60,7 @@ resource "aws_eks_cluster" "mycluster" {
   # version = "1.31"   # Optional: specify EKS version
 
   vpc_config {
-    subnet_ids = slice(data.aws_subnets.default.ids, 0, 2) # Use first 2 subnets (different AZs)
+    subnet_ids = slice(data.aws_subnets.default_subnets.ids, 0, 2) # Use first 2 subnets (different AZs)
   }
 
   depends_on = [
