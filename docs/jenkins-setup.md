@@ -35,9 +35,7 @@ In Jenkins, add the following credentials under Manage Jenkins → Manage Creden
 
  - **docker-cred**: Docker Hub username and password.
  - **aws-cred**: AWS access key + secret key
- - **database_url**: `jdbc:mariadb://<RDS_Endpoint>:3306/student_db`
- - **database_user**: Database username for the MariaDB instance.
- - **database_password**: Database password for the MariaDB instance.
+ 
 
 
 ## CI/CD Pipelines

@@ -56,6 +56,7 @@ aws eks update-kubeconfig --region us-east-1 --name mycluster
 ```
 
 2. **Apply Secrets**
+Add database credentials in secret form, like username, password and database url. (here i only used secrets for username and password, for database URL directly pasted in backend deployment file.)
 ```bash
 kubectl apply -f k8s/secrets.yml
 ```
