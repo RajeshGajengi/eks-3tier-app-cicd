@@ -56,7 +56,7 @@ pipeline {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
                     sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml'
                     echo 'Waiting for 30 seconds for pods running...'
-                    sleep(time: 30, unit: 'SECONDS') // Pause for 30 seconds
+                    sleep(time: 30, unit: 'SECONDS') 
                     echo 'Resuming after wait.'
                 }
             }
@@ -80,6 +80,9 @@ pipeline {
         stage('verify-deployment') {
             steps {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
+                    echo 'Waiting for 30 seconds for pods running...'
+                    sleep(time: 30, unit: 'SECONDS') 
+                    echo 'Resuming after wait.'
                     sh '''
                         kubectl get pods
                         kubectl get svc
