@@ -2,7 +2,7 @@
 # Provider Configuration
 #############################################
 provider "aws" {
-  region = "ap-south-1" # Using Mumbai region
+  region = var.region
 }
 
 #############################################
@@ -55,7 +55,7 @@ data "aws_subnets" "default_subnets" {
 # EKS Cluster Definition
 #############################################
 resource "aws_eks_cluster" "mycluster" {
-  name     = "mycluster"
+  name     = var.cluster_name
   role_arn = aws_iam_role.cluster_role.arn
   # version = "1.31"   # Optional: specify EKS version
 
@@ -107,14 +107,14 @@ resource "aws_iam_role_policy_attachment" "nodegroup_AmazonEC2ContainerRegistryR
 #############################################
 resource "aws_eks_node_group" "node_group" {
   cluster_name    = aws_eks_cluster.mycluster.name
-  node_group_name = "mynode"
+  node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.nodegroup_role.arn
   subnet_ids      = data.aws_subnets.default_subnets.ids
 
   scaling_config {
-    desired_size = 1
-    max_size     = 1
-    min_size     = 1
+    desired_size = var.desired_size
+    max_size     = var.max_size
+    min_size     = var.min_size
   }
 
   # Ensure IAM Role permissions exist before node group creation
