@@ -6,7 +6,9 @@ WORKDIR /app
 COPY . .
 
 # Build the JAR without running tests
-RUN mvn clean package -DskipTests
+RUN rm -f src/main/resources/application.properties && \
+    cp -f application.properties src/main/resources/application.properties && \
+    mvn clean package -DskipTests
 
 # Stage 2: Create runtime image
 FROM eclipse-temurin:17-jre-alpine
