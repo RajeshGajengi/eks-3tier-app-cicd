@@ -25,3 +25,7 @@ variable "min_size" {
   default = 1
 }
 
+variable "instance_type" {
+    type = string
+    default = "t2.medium"
+}

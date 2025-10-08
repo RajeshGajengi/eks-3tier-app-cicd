@@ -60,7 +60,7 @@ resource "aws_eks_cluster" "mycluster" {
   # version = "1.31"   # Optional: specify EKS version
 
   vpc_config {
-    subnet_ids = data.aws_subnets.default_subnets.ids
+    subnet_ids = slice(data.aws_subnets.default.ids, 0, 2) # Use first 2 subnets (different AZs)
   }
 
   depends_on = [
@@ -110,6 +110,7 @@ resource "aws_eks_node_group" "node_group" {
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.nodegroup_role.arn
   subnet_ids      = data.aws_subnets.default_subnets.ids
+  instance_types = [var.instance_type]
 
   scaling_config {
     desired_size = var.desired_size
