@@ -55,7 +55,7 @@ pipeline {
             steps {
                 withAWS(credentials: 'aws-cred', region: "${AWS_REGION}") {
                     sh 'kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml'
-                    echo 'Waiting for 30 seconds for pods running...'
+                    echo 'Waiting for 1 minute for ingress pods running...'
                     sleep(time: 60, unit: 'SECONDS') 
                     echo 'Resuming after wait.'
                 }
