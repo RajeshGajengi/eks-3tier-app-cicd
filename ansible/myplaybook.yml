@@ -1,7 +1,7 @@
 
 ---
 - name: Install Java and Jenkins on localhost (master)
-  hosts: localhost
+  hosts: Master
   become: true
 
   tasks:
@@ -14,73 +14,22 @@
     - name: Execute the mysql script
       script: ./scripts/mysql_script.sh
 
+    - name: Execute the AWS CLI script
+      script: ./scripts/awscli_script.sh
 
+    - name: Execute the docker script
+      script: ./scripts/docker_script.sh
+
+    - name: Execute the kubectl script
+      script: ./scripts/kubectl_script.sh
+
+    - name: Execute the helm script
+      script: ./scripts/helm_script.sh
     
 
 
-- name: Install java, AWS CLI, Docker, kubectl, Helm on agent server
-  hosts: agent
-  become: true
 
-  tasks:
-    - name: Create directory to store scripts on remote server
-      file:
-        path: /home/ubuntu/scripts
-        state: directory
-        mode: '0755'
-
-    - name: Copy Java script to agent server
-      copy:
-        src: ./scripts/java_script.sh
-        dest: /home/ubuntu/scripts/java_script.sh
-        mode: '0755'
-
-    - name: Execute the Java script
-      shell: /home/ubuntu/scripts/java_script.sh
-
-
-    - name: Copy AWS CLI script to agent server
-      copy:
-        src: ./scripts/awscli_script.sh
-        dest: /home/ubuntu/scripts/awscli_script.sh
-        mode: '0755'
-
-    - name: Execute the AWS CLI script
-      shell: /home/ubuntu/scripts/awscli_script.sh
-
-
-    - name: Copy Docker script to agent server
-      copy:
-        src: ./scripts/docker_script.sh
-        dest: /home/ubuntu/scripts/docker_script.sh
-        mode: '0755'
-
-    - name: Execute the docker script
-      shell: /home/ubuntu/scripts/docker_script.sh
-
-
-    - name: Copy kubectl script to agent server
-      copy:
-        src: ./scripts/kubectl_script.sh
-        dest: /home/ubuntu/scripts/kubectl_script.sh
-        mode: '0755'
-
-    - name: Execute the kubectl script
-      shell: /home/ubuntu/scripts/kubectl_script.sh
-
-
-    - name: Copy helm script to agent server
-      copy:
-        src: ./scripts/helm_script.sh
-        dest: /home/ubuntu/scripts/helm_script.sh
-        mode: '0755'
-
-    - name: Execute the helm script
-      shell: /home/ubuntu/scripts/helm_script.sh
-
-
-
-- name: Install java,docker agent server
+- name: Install docker,sonarqube on sonarqube server
   hosts: sonarqube
   become: true
 
@@ -105,3 +54,30 @@
 
     - name: run sonarqube container
       shell: docker run -d --name sonarqube-custom -p 9000:9000 sonarqube:10.6-community
+
+
+
+- name: Install prometheus and grafana server
+  hosts: monitoring
+  become: true
+
+  tasks:
+    - name: Create directory to store scripts on remote server
+      file:
+        path: /home/ubuntu/scripts
+        state: directory
+        mode: '0755'
+
+    # - name: Copy Java script to agent server
+    #   copy:
+    #     src: ./scripts/java_script.sh
+    #     dest: /home/ubuntu/scripts/java_script.sh
+    #     mode: '0755'
+
+    # - name: Execute the Java script
+    #   shell: /home/ubuntu/scripts/java_script.sh
+
+
+  
+
+
