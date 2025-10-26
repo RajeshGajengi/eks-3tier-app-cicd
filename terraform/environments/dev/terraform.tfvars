@@ -1,6 +1,6 @@
 environment = "dev"
-instance_type = "t2.medium"
-key_name = "Rajesh(Virginia)"
+instance_type = "t2.micro"
+key_name = "project"
 ami = "ami-0360c520857e3138f"
 
 # EKS VPC and Subnets Variables

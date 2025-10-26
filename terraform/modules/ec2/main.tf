@@ -41,7 +41,23 @@ resource "aws_instance" "master" {
               apt-get install -y software-properties-common
               add-apt-repository --yes --update ppa:ansible/ansible
               apt-get install -y ansible
+
             EOF
+
+  provisioner "file" {
+    source      = "${path.module}/../../../project.pem"   # local file on your system
+    destination = "/home/ubuntu/project.pem" # where to place it on EC2
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"                     # use ubuntu for Ubuntu AMIs
+      private_key = file("${path.root}/../../../project.pem")       # your private SSH key
+      host        = self.public_ip
+      timeout = "2m"
+    }
+    
+  }
+
 
   tags = {
     Name = "${var.environment}-Master"
