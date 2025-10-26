@@ -1,1 +1,7 @@
 project.pem
+aws_configure.txt
+ansible/sample_inventory.ini
+Terraform/environments/dev/.terraform
+Terraform/environments/dev/.terraform.lock.hcl
+Terraform/environments/dev/terraform.tfstate
+Terraform/environments/dev/terraform.tfstate.backup
