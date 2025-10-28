@@ -34,7 +34,8 @@ resource "aws_db_subnet_group" "my_rds_subnet_group" {
   }
 }
 
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "mariadb" {
+  identifier = "mariadb"
   allocated_storage    = 10
   db_name              = var.db_name
   engine               = "mariadb"

@@ -1,3 +1,3 @@
 output "rds_endpoint" {
-  value = aws_db_instance.default.address
+  value = aws_db_instance.mariadb.address
 }
