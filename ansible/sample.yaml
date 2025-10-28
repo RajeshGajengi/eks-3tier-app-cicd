@@ -156,4 +156,87 @@
       shell: /home/ubuntu/scripts/docker_script.sh
 
     - name: run sonarqube container
-      shell: docker run --name sonarqube-custom -p 9000:9000 sonarqube:10.6-community
+      shell: docker run --name sonarqube-custom -p 9000:9000 sonarqube:10.6-communit
+
+
+
+##################################################
+- name: Install prometheus and grafana
+  hosts: monitor
+  become: true
+
+  tasks:
+  - name: Download prometheus 
+    get_url: 
+      url: https://github.com/prometheus/prometheus/releases/download/v3.7.2/prometheus-3.7.2.linux-amd64.tar.gz
+      dest: /tmp
+      mode: '0644'
+
+  - name: Extract the tar.gz file
+    unarchive:
+      src: "/tmp/prometheus-3.7.2.linux-amd64.tar.gz"
+      dest: "/opt"
+      remote_src: yes   # indicates file already on remote host
+
+  - name: Run Prometheus in the background
+    shell: "nohup ./prometheus > prometheus.log 2>&1 &"
+    args:
+      chdir: "/opt/prometheus-3.7.2.linux-amd64" # change directory before executing
+
+
+  - name: Verify Prometheus is running
+    shell: "pgrep -a prometheus"
+    register: prometheus_status
+
+  - debug:
+      var: prometheus_status.stdout
+
+
+
+- name: Install Grafana Enterprise manually
+  hosts: monitor
+  become: yes
+  tasks:
+
+  - name: Install dependencies
+    apt:
+      name:
+        - adduser
+        - libfontconfig1
+        - musl
+      state: present
+      update_cache: yes
+
+  - name: Download Grafana Enterprise .deb package
+    get_url:
+        url: "https://dl.grafana.com/grafana-enterprise/release/12.2.1/grafana-enterprise_12.2.1_18655849634_linux_amd64.deb"
+        dest: "/tmp/grafana-enterprise_12.2.1_amd64.deb"
+        mode: '0644'
+
+  - name: Install Grafana Enterprise package
+    apt:
+      deb: "/tmp/grafana-enterprise_12.2.1_amd64.deb"
+      state: present
+
+  - name: Enable and start Grafana service
+    systemd:
+      name: grafana-server
+      enabled: yes
+      state: started
+
+
+
+# 🧠 Explanation
+
+# nohup: keeps the process alive even after SSH/Ansible disconnects.
+
+# > prometheus.log 2>&1: redirects both stdout and stderr to a log file.
+
+# &: runs the process in the background.
+
+# shell: ensures the line is executed through a real shell (/bin/sh -c).
+
+# | Stream   | Name                | File Descriptor | Purpose                                                |
+# | -------- | ------------------- | --------------- | ------------------------------------------------------ |
+# | `stdout` | **Standard Output** | `1`             | Normal output — the “expected” results of the command. |
+# | `stderr` | **Standard Error**  | `2`             | Error messages, warnings, or diagnostics.              |
